@@ -1,41 +1,33 @@
+---
+layout: default
+title: Economics
+background: '/img/bg-post.jpg'  # optional
+---
 
-<!DOCTYPE html>
- <!-- Navbar -->
-    {% include navbar.html %}
-<html lang="en">
-  {% include head.html %}
-  
-   
-
-
-<!-- Page Header -->
-{% if page.background %}
 <header class="masthead" style="background-image: url('{{ page.background | prepend: site.baseurl | replace: '//', '/' }}')">
-  {% else %}
-  <header class="masthead">
-    {% endif %}
-    <div class="overlay"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="page-heading">
-            <h1>{{"Economics"}}</h1>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
+  <div class="overlay"></div>
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="page-heading">
+          <h1>{{ page.title }}</h1>
+          {% if site.description %}
+          <span class="subheading">{{ site.description }}</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 
-        {{ content }}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
 
-        <!-- Home Post List -->
-        {% for post in site.posts limit : 5 %}
+      {{ content }}
 
+      {% assign econ_posts = site.posts | where_exp: "post", "post.categories contains 'economics'" %}
+      {% for post in econ_posts %}
         <article class="post-preview">
           <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
             <h2 class="post-title">{{ post.title }}</h2>
@@ -45,39 +37,18 @@
             <h3 class="post-subtitle">{{ post.excerpt | strip_html | truncatewords: 15 }}</h3>
             {% endif %}
           </a>
-          <p class="post-meta">Posted by
-            {% if post.author %}
-            {{ post.author }}
-            {% else %}
-            {{ site.author }}
-            {% endif %}
-            on
-            {{ post.date | date: '%B %d, %Y' }} &middot; {% include read_time.html content=post.content %}            
+          <p class="post-meta">
+            Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.author }}{% endif %}
+            on {{ post.date | date: '%B %d, %Y' }} &middot; {% include read_time.html content=post.content %}
           </p>
         </article>
-
         <hr>
+      {% endfor %}
 
-        {% endfor %}
-
-        <!-- Pager -->
-        <div class="clearfix">
-          <a class="btn btn-primary float-right" href="{{"/posts" | relative_url }}">View All Posts &rarr;</a>
-        </div>
-
+      <div class="clearfix">
+        <a class="btn btn-primary float-right" href="{{ '/economics' | relative_url }}">View All Economics Posts &rarr;</a>
       </div>
+
     </div>
   </div>
-
-  <body>
-
-    <!-- Footer -->
-    {% include footer.html %}
-
-    <!-- Scripts -->
-    {% include scripts.html %}
-
-    <!-- Google Analytics -->
-    {% include google-analytics.html %}
-  </body>
-</html>
+</div>
