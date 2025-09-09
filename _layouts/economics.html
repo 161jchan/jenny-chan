@@ -1,1 +1,24 @@
 
+<!DOCTYPE html>
+<html lang="en">
+  {% include head.html %}
+
+  <body>
+    <!-- Navbar -->
+    {% include navbar.html %}
+
+    <!-- Page content -->
+    <main>
+      {{ content }}
+    </main>
+
+    <!-- Footer -->
+    {% include footer.html %}
+
+    <!-- Scripts -->
+    {% include scripts.html %}
+
+    <!-- Google Analytics -->
+    {% include google-analytics.html %}
+  </body>
+</html>
