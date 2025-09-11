@@ -6,7 +6,16 @@ date: 2025-09-09 23:45:13 -0400
 categories: [economics]
 background: '/img/posts/04.jpg'
 ---
-
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
 
 <p>We think of banks as buildings with vaults, but their real job is far more interesting. They have 3 simple tasks: take deposits, give loans, and move money. But these simple jobs give them 3 massive powers in the economy: they implement policy, absorb risk, and fuel growth.</p>
 
@@ -46,7 +55,19 @@ background: '/img/posts/04.jpg'
 
  <b>The Purest Signal: Spot Rates </b> 
     <p>This is the yield on a zero-coupon bond. It’s the true, noise-free cost of borrowing money for a specific period. String these together and you get the yield curve, the master chart for all lending rates that even hints at future economic expectations.</p>
-<img class="https://study.com/cimages/multimages/16/787b451e-1722-4bee-8730-99ffae8e72da_present_value.png" alt="Present Value of Bonds">
+
+<p>The fundamental formula for the <strong>present value (PV)</strong> of a bond is the sum of its discounted cash flows:</p>
+
+$$
+PV = \sum_{t=1}^{n} \frac{C}{(1 + r)^t} + \frac{F}{(1 + r)^n}
+$$
+
+<p>Where:<br>
+\( C \) = Coupon payment<br>
+\( F \) = Face value (par value)<br>
+\( r \) = Discount rate (yield to maturity)<br>
+\( n \) = Number of periods until maturity</p>
+
 <blockquote class="blockquote"> A Quick Fun Fact (Convexity):</blockquote>
    If the market drops 5% and then rises 5%, you don't break even. You end up slightly down. Why? The math of percentages and the curved (convex) relationship between price and yield means the gain on the way up is applied to a smaller base than the loss on the way down.</p>
 
