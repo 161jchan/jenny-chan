@@ -6,7 +6,6 @@ background: '/img/bg-post.jpg'
 <div class="container">
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
-      <h1>{{ page.title }}</h1>
 
       {% assign econ_posts = site.posts | where_exp:"post", "post.categories contains 'economics'" %}
 
