@@ -1,0 +1,61 @@
+---
+layout: post
+title: "The Engine Room: Exchanges, CCPs, and The 2008 Overhaul"
+subtitle: "How Financial Infrastructure Keeps Markets Safe"
+date: 2025-09-18 14:30:00 -0400
+categories: [risk]
+background: '/img/posts/06.jpg'
+---
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+
+<h2 class="section-heading">How Exchanges and OTC Trading Evolved</h2>
+<p>Exchanges have core functions: they match trades, define contract details, ensure transparency, and enforce contracts. They've evolved from the open outcry system (traders using hand signals on a floor) to fully electronic trading. This is faster but some argue we've lost the ability to read other traders' body language and predict short-term trends.</p>
+
+<p>The 2007-2008 global financial crisis was a massive wake-up call for the OTC market. The new regulations are built on three pillars:</p>
+
+<b>Central Clearing:</b> All standardized OTC derivatives must be cleared through a CCP.
+
+<b>Electronic Trading:</b> Trades must be done on electronic platforms for greater transparency.
+
+<b>Trade Reporting:</b> All OTC trades must be reported to a central repository.
+
+<p>Today, about ¾ of the OTC market is cleared through CCPs, a complete reversal from before the crisis.</p>
+
+<h2 class="section-heading">The CCP Safety System: Margins and Waterfalls</h2>
+<p>The CCP takes on significant credit risk. To protect itself, it demands robust collateral:</p>
+
+<b>Initial Margin:</b> An upfront cash cushion. It's calculated so there's a 99% probability it will cover market moves over a short period (like 5 days). This protects against the "bid-ask spread" cost if a position has to be closed quickly after a default. Collateral is usually cash, but securities can be used with a haircut (e.g., a $100 bond might only count as $90).
+
+<b>Variation Margin:</b> Daily cash payments to settle the day's gains and losses. If your position loses value today, you must pay that amount to the CCP.
+
+<p>This is why you have margins for futures and short options—your potential losses are huge. If a member fails to post margin, they are in default. Their positions are closed, and losses are absorbed in a waterfall:</p>
+
+1. The defaulting member's initial margin.
+2. The defaulting member's contribution to the default fund.
+3. Non-defaulting members' contributions to the default fund.
+4. The CCP's own equity.
+
+<h2 class="section-heading">Why Short Options Are So Risky (The NVIDIA Example)</h2>
+<p>Let's say NVIDIA is at $100. I think it's overvalued, so I sell (short) 10 call options with a $110 strike price, for a $2 premium.</p>
+
+<p>The buyer pays me <code>10 contracts * 100 shares/contract * $2 = $2,000</code> upfront.</p>
+
+<p>My risk is opportunity cost. If NVIDIA skyrockets to $200, the buyer will exercise their right to buy my shares for $110. I'm forced to sell at $110 when I could have sold at $200, missing out on $90 per share of profit.</p>
+
+<p>Conversely, the buyer gets massive leverage. For a $400 investment (2 contracts), they control 200 shares. If the stock goes up, their percentage return is much higher than if they bought the stock outright. If it goes down, their maximum loss is just the $400 premium paid. This is why going long on options is a cheaper way to hedge risk or speculate.</p>
+
+<h2 class="section-heading">Major CCPs and Agreements</h2>
+<p>The largest CCPs include SwapClear in London, CME ClearPort in Chicago, and ICE. In the OTC market, the CCP role is similar to a clearinghouse's role in the exchange market, only CCP transactions are less standard than clearing house ones, requiring more calculation on margin requirements.</p>
+
+<p>Typically there is an ISDA master agreement describing future transactions and clearing and a supporting doc called CSA that defines the collateral agreement. Since the Global Financial Crisis (GFC), CCPs require way more collateral, and even more for bilateral trades.</p>
+
+<p>Placeholder text by <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by <a href="https://unsplash.com/">Unsplash</a>.</p>
