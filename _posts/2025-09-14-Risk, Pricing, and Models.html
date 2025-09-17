@@ -37,8 +37,12 @@ background: '/img/posts/05.jpg'
 
 <p>The Capital Asset Pricing Model (CAPM) tells us that the relationship between the futures price and the expected future spot price depends on the asset's correlation with the overall market.</p>
 
-<h2 class="section-heading">Pricing Models: From Coin Flips to Continuous Time</h2>
+<h2 class="section-heading">Volatility and Modeling Behavior</h2>
+<p>Daily market volatility is the standard deviation of returns. It has "fatter tails" than a normal distribution—extreme events happen more often than models predict. Models like EWMA and GARCH are used to estimate volatility, giving more weight to recent data. GARCH is especially smart because it incorporates a long-run average variance, meaning it expects volatility to eventually drift back to a steady state after a shock.</p>
 
+<p>The challenge is modeling human behavior alongside big data. Risk managers look at the tails of the distribution (the worst-case scenarios), while traders often focus on the mean (the most likely outcome). This difference in perspective is crucial.</p>
+
+<h2 class="section-heading">Pricing Models: From Coin Flips to Continuous Time</h2>
 <b>Markov Chains:</b> These are "memoryless" processes where the next state depends only on the current state. They're super cool for solving problems like "what's the expected number of coin flips to get two heads in a row?" You define states (e.g., 0 heads, 1 head, 2 heads), set up equations for the expected steps from each state, and solve.
 
 <b>Binomial Trees:</b> This is a discrete model for pricing options. It assumes the stock price can only move up or down a certain amount in each time step. You build a tree of possible future prices and work backwards to value the option today.
