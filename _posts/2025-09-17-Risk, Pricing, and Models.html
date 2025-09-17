@@ -1,0 +1,61 @@
+---
+layout: post
+title: "Risk, Pricing, and Models"
+subtitle: "Understanding the Fundamentals of Financial Risk"
+date: 2025-09-17 09:15:00 -0400
+categories: [risk]
+background: '/img/posts/05.jpg'
+---
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+
+<p>The core thesis of finance is the risk-return tradeoff. Theoretically, shareholders shouldn't care about diversifiable (unsystematic) risk, only systematic risk (market risk), because you can diversify away the unsystematic stuff. However, companies are sensitive to total risk because of bankruptcy costs. Financial institutions also care about unsystematic risk because they want to prevent failures.</p>
+
+<h2 class="section-heading">Approaches to Risk Management</h2>
+<p>There are two main ways to manage risk:</p>
+
+<b>Risk Decomposition:</b> Managing risks one by one.
+
+<b>Risk Aggregation:</b> Using diversification to reduce overall risk.
+
+<p>We often quantify the risk of an asset by its standard deviation of annual return. For a portfolio, it's more complex—you find the expected return and standard deviation for each asset and then see how they correlate to find the portfolio's overall risk and return. This leads to the efficient frontier: the set of portfolios that offer the highest expected return for a given level of risk.</p>
+
+<h2 class="section-heading">How to Price Forwards and Futures</h2>
+<p>The pricing depends on the type of asset:</p>
+
+<b>Investment Assets:</b> The future price is based on the spot price plus the cost of carry (storage cost + financing cost - income received from the asset). This can be for assets that provide no income, a known dollar income, or a known yield.
+
+<b>Consumption Assets:</b> It's trickier because these are held for use, not just investment, so the pricing isn't as straightforward.
+
+<p>The Capital Asset Pricing Model (CAPM) tells us that the relationship between the futures price and the expected future spot price depends on the asset's correlation with the overall market.</p>
+
+<h2 class="section-heading">Pricing Models: From Coin Flips to Continuous Time</h2>
+
+<b>Markov Chains:</b> These are "memoryless" processes where the next state depends only on the current state. They're super cool for solving problems like "what's the expected number of coin flips to get two heads in a row?" You define states (e.g., 0 heads, 1 head, 2 heads), set up equations for the expected steps from each state, and solve.
+
+<b>Binomial Trees:</b> This is a discrete model for pricing options. It assumes the stock price can only move up or down a certain amount in each time step. You build a tree of possible future prices and work backwards to value the option today.
+
+<b>Black-Scholes Model:</b> This is the continuous-time version of the binomial model. It assumes stock prices follow a geometric Brownian motion (a random walk with a drift). Using stochastic calculus and Ito's Lemma, it derives a formula for a theoretical option price. In simple terms, for a put option, you're looking at the expected value of all future scenarios where the stock price (St) is below the strike price (K), integrated over a probability distribution.
+
+<b>Monte Carlo Simulation:</b> This method uses computer power to simulate thousands of possible random paths for the stock price, calculates the option's payoff for each path, and then averages all those payoffs and discounts them back to today's value to get a price.
+
+<h2 class="section-heading">The Greeks: Measuring Sensitivity</h2>
+<p>Once priced, you manage options using "the Greeks":</p>
+
+<b>Delta:</b> Sensitivity of the option's price to the stock price.
+
+<b>Vega:</b> Sensitivity to volatility.
+
+<b>Theta:</b> Time decay—the option loses value as expiration approaches.
+
+<b>Rho:</b> Sensitivity to interest rates.
+
+<p>Placeholder text by <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by <a href="https://unsplash.com/">Unsplash</a>.</p>
