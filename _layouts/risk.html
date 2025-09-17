@@ -23,8 +23,7 @@ background: '/img/bg-post.jpg'  # optional
 
       {{ content }}
 
-      {% assign risk_posts = site.posts | where_exp: "post", "post.categories contains 'risk'" %}
-      {% for post in risk_posts %}
+      {% for post in site.categories.risk %}
         <article class="post-preview">
           <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
             <h2 class="post-title">{{ post.title }}</h2>
