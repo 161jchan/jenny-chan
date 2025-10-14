@@ -1,1 +1,77 @@
 Equation System of Financial Institution Business
+---
+layout: post
+title: "A to Z of Derivatives"
+subtitle: "Basics to Real-World Use"
+date: 2025-09-12 23:45:13 -0400
+categories: [risk]
+background: '/img/posts/04.jpg'
+---
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+
+<p>Derivatives are extremely versatile financial tools, and their market has seen amazing growth over the last 40 years. But what are they? At their core, a derivative involves two parties agreeing to a future transaction. Its value isn't standalone; it's dependent on the value of an underlying variable, like the price of a stock, a currency exchange rate, or an interest rate.</p>
+
+<p>Think of it as a bet or an insurance policy on the future price of an asset.</p>
+
+<h2 class="section-heading">The Two Marketplaces: Exchange-Traded vs. OTC</h2>
+<p>When two parties make this agreement, where does it happen?</p>
+
+<b>Exchange-Traded (Futures):</b>   This is like a regulated, organized arena. The exchange's clearinghouse is the key player here. It handles the transaction and, most importantly, takes on the credit risk. This means it guarantees the deal, so if one party can't pay up, the other is protected. The clearinghouse ensures everyone is creditworthy.
+
+<b>Over-the-Counter (OTC - Forwards & Swaps):</b>   This is a much larger, custom-tailored marketplace. It's where entities (usually big financial institutions) deal directly with each other. It allows for more flexible and bespoke contracts. Historically, this came with higher risk that the other party might default. Since the 2008 financial crisis, regulators have forced most OTC trades to go through a Central Counterparty (CCP), which, like a clearinghouse, takes on the credit risk of the parties involved.
+
+<h2 class="section-heading">The Main Instruments: Your Derivative Toolbox</h2>
+<p>Derivatives come in several key forms:</p>
+
+<b>Spot Trades:</b>   The simplest kind. You buy or sell an asset immediately at the current market price.
+
+<b>Forwards and Futures:</b>   These are about obligation. You lock in a price today for a transaction that will happen in the future.
+
+<b>Long Position:</b>   You agree to buy the asset in the future.
+
+<b>Short Position:</b>   You agree to sell the asset in the future.
+
+<p>The difference? Forwards are custom OTC deals. Futures are standardized and traded on an exchange, which makes closing a position (getting out of the deal) much easier. The futures price is a pure function of supply and demand.</p>
+
+<b>Swaps:</b>   These are agreements to exchange future cash flows. A common example is an interest rate swap, where one party swaps a fixed interest rate for a floating rate with another party.
+
+<b>Options:</b>   This is about right, not obligation. You pay an upfront premium for this right.
+
+<b>Call Option:</b>   Gives you the right to buy an asset at a set price (the strike price).
+
+<b>Put Option:</b>   Gives you the right to sell an asset at a set price.
+
+<b>Why use a future over an option?</b>   Because that right isn't free! The premium is the upfront cost. If the market doesn't move in your favor, the option expires worthless, and you lose the premium. With a future, you are forced into the transaction at expiration.
+
+<h2 class="section-heading">Why They Exist: Hedgers, Speculators, and Arbitrageurs</h2>
+<p>The success of derivatives comes from their versatility:</p>
+
+<b>Hedgers</b>   (like businesses) use them to reduce risk. Example: A US company planning to exchange 1 billion euros for USD in 3 months can use a forward contract to lock in today's exchange rate and eliminate the risk of the euro falling.
+
+<b>Speculators</b>   use them to make leveraged bets on future price movements.
+
+<b>Arbitrageurs</b>   take advantage of tiny price discrepancies between different markets, which helps keep prices efficient everywhere. A key reference rate for many of these transactions, especially swaps, is LIBOR (the London Interbank Offered Rate).
+
+<h2 class="section-heading">The Power of Leverage: Buying on Margin</h2>
+<p>This is how traders amplify their bets. Buying on margin means a trader borrows money from a broker to buy an asset, using that asset as collateral.</p>
+
+<b>Example:</b>   A trader buys 500 shares at $120 per share. The total cost is $60,000.
+
+<p>The broker requires a 30% margin. This means the trader must put up 30% of the value themselves: $18,000. They borrow the remaining $42,000.
+
+But they must also maintain this margin. The formula is: (Initial Equity - Losses) / Current Total Value of Assets
+
+If the share price crashes to $80, the total asset value is now $40,000. The trader's equity is now $18,000 - $20,000 loss = -$2,000. To get back to the required margin, they must immediately deposit a lot of cash, or the broker will sell the assets to cover the loan. This shows how losses are magnified and borne mostly by the trader.</p>
+  
+  
+
+<p>Placeholder text by <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by <a href="https://unsplash.com/">Unsplash</a>.</p>
