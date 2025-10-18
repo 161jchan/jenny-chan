@@ -18,69 +18,59 @@ background: '/img/posts/04.jpg'
   };
 </script>
 
-<p>I'm **thrilled** to share the results of my latest risk modeling project! We're putting a real-world, high-octane portfolio under the microscope: **Long 100 shares of TSLA**, **Long 200 shares of NVDA**, and a crucial, defensive **Short 50 shares of SPY**.</p>
+<p>This project calculates the risk of a portfolio holding <strong>100 shares of TSLA</strong>, <strong>200 shares of NVDA</strong>, and a <strong>Short 50 shares of SPY</strong>. Using daily price data from January 2, 2023, to January 2, 2025, we'll use the Historical Simulation method to find the portfolio's 99% Value at Risk (VaR) and Expected Shortfall (ES).</p>
 
-<p>Using daily market data from the last two years (Jan 2023 to Jan 2025!), I'll walk you through the **Historical Simulation** method to answer the single most important question: **What's my maximum expected loss?**</p>
+<h2 class="section-heading">The Method: Historical Simulation</h2>
 
-<p>We won't just look at the $99\%$ **Value at Risk (VaR)**—the loss we expect only $1\%$ of the time. We're going a step further to calculate the **Expected Shortfall (ES)**, which reveals the **average loss** if that $1\%$ tail risk actually hits. This is where the real risk lies! Get ready for a deep dive into portfolio PnL and the thrilling world of downside risk management. Let's see if this hedge is really protecting us! 📉📈</p>
+<p>We calculate the daily Profit and Loss (PnL) for the entire portfolio by looking at the actual price changes over the last two years. The key is handling the short position correctly.</p>
 
-<h2 class="section-heading">Phase 1: Building the Daily PnL Vector</h2>
-
-<p>Our first task is to construct the historical Profit and Loss ($\text{PnL}$) vector for the entire portfolio. We do this by calculating the daily dollar change for each position and then summing them up. **The sign is everything here!**</p>
-
-<h3 class="section-heading">The Position PnL Formula</h3>
-<p>For each day \(t\), the dollar PnL for an individual asset is:</p>
+<h3 class="section-heading">Daily PnL Calculation</h3>
+<p>For each day \(t\), the PnL for each asset is:</p>
 $$
-\text{PnL}_{\text{Asset}, t} = (\text{Price}_t - \text{Price}_{t-1}) \times \text{Signed Quantity}
+\text{PnL}_{\text{Asset}, t} = (\text{Price}_t - \text{Price}_{t-1}) \times \text{Quantity}
 $$
-
-<p>The total portfolio PnL ($\text{PnL}_t$) is the sum of these components:</p>
+<p>The total portfolio PnL is the sum:</p>
 $$
 \text{PnL}_t = \text{PnL}_{\text{TSLA}, t} + \text{PnL}_{\text{NVDA}, t} + \text{PnL}_{\text{SPY}, t}
 $$
-
-<h3 class="section-heading">The Crucial Short Position Logic</h3>
-<p>The **TSLA** and **NVDA** positions are easy: Long means a positive quantity (+$100$ and +$200$). But for the **Short 50 shares of SPY**, we must use a **negative quantity** to correctly capture the PnL:</p>
-<p>$$
+<p><strong>Crucial Point:</strong> For the <strong>Short 50 SPY</strong> position, we use a <strong>negative quantity</strong> (-50). This means a price increase in SPY results in a loss (negative PnL), which is correct for a short.</p>
+$$
 \text{PnL}_{\text{SPY}, t} = (\text{SPY}_t - \text{SPY}_{t-1}) \times \mathbf{(-50)}
-$$</p>
-<p>If SPY's price goes up, the price change is positive, but multiplying by \(-50\) correctly results in a **negative PnL** (a loss) for our short position. This PnL vector forms the core of our risk analysis.</p>
+$$
 
-<h2 class="section-heading">Phase 2: Calculating the $\mathbf{99\%}$ VaR (The Loss Threshold)</h2>
+<h2 class="section-heading">Step 1: Build the Historical PnL Vector</h2>
+<p>We calculate the PnL for each of the ~500 trading days in our dataset. This gives us a vector of 500+ simulated daily PnL outcomes, which forms the empirical distribution of our portfolio's returns.</p>
 
-<p>The $99\%$ VaR is the loss amount that is only exceeded $1\%$ of the time. In the Historical Simulation method, this is equivalent to finding the **$1^{\text{st}}$ percentile** (or $0.01$ quantile) of our daily PnL vector.</p>
-
-<p>Assuming our daily PnL data is in the Excel range <code>B2:B505</code> (representing the ~500 days of data):</p>
+<h2 class="section-heading">Step 2: Calculate the 99% Value at Risk (VaR)</h2>
+<p>The 99% VaR is the loss level we expect to exceed only 1% of the time. Using our historical PnL vector, we find the 1st percentile (the 0.01 quantile). In Excel, with our PnL data in cells <code>B2:B505</code>:</p>
 <p>$$
 \mathbf{99\%\ VaR} = \mathbf{ABS}(\text{PERCENTILE.INC}(\text{B2:B505}, \mathbf{0.01}))
 $$</p>
+<p>We take the absolute value to report VaR as a positive dollar amount representing the loss.</p>
 
-<p>The use of <code>PERCENTILE.INC(..., 0.01)</code> finds the largest negative value that separates the worst $1\%$ of outcomes. We wrap it in <code>ABS()</code> because VaR is conventionally reported as a **positive dollar loss**.</p>
+<h2 class="section-heading">Step 3: Calculate the 99% Expected Shortfall (ES)</h2>
+<p>Expected Shortfall goes a step further, telling us the average loss on the worst 1% of days. We calculate it by averaging all the PnLs that are worse than the VaR threshold.</p>
+<p>If our calculated VaR (the negative threshold) is in cell <code>C1</code>:</p>
+<p>$$
+\mathbf{99\%\ ES} = \mathbf{ABS}(\text{AVERAGEIF}(\text{B2:B505}, "\mathbf{<}" \& \mathbf{C1}))
+$$</p>
 
-<h2 class="section-heading">Phase 3: Uncovering the Expected Shortfall (The Average Tail Loss)</h2>
-
-<p>Expected Shortfall (ES) is a superior risk metric because it tells us what we can expect to lose *if* a VaR breach actually occurs. It is simply the average of all losses that are worse (more negative) than the VaR threshold.</p>
-
-<h3 class="section-heading">The Two-Step ES Calculation</h3>
-<ol>
-    <li>First, we define our negative VaR threshold (let's say we store it in cell <code>C1</code>):
-    $$ \mathbf{VaR}_{\text{Threshold}} = \text{PERCENTILE.INC}(\text{B2:B505}, 0.01) $$</li>
-    <li>Next, we use the powerful <code>AVERAGEIF</code> function to find the average of all PnL values that are strictly less than this threshold:
-    $$
-    \mathbf{99\%\ ES} = \mathbf{ABS}(\text{AVERAGEIF}(\text{B2:B505}, "\mathbf{<}" \& \mathbf{C1}))
-    $$</li>
-</ol>
-
-<p>This final number represents the average loss we would expect on the worst $1\%$ of days. It’s a vital piece of information for any serious risk manager!</p>
-
-<h2 class="section-heading">The Results: Is the Hedge Working?</h2>
-
-<p>*(This is where you would present the calculated numbers and interpret them!)*</p>
-
-<p>Based on the two years of market data, our analysis yielded the following results:</p>
+<h2 class="section-heading">The Results</h2>
+<p>After running the calculations on the two years of data, here are the results:</p>
 <ul>
-    <li>**Calculated $\mathbf{99\%}$ VaR: 2785 </li>
-    <li>**Calculated $\mathbf{99\%}$ Expected Shortfall: 3739.9 </li>
+    <li><strong>99% Value at Risk (VaR): $2,785</strong></li>
+    <li><strong>99% Expected Shortfall (ES): $3,739.90</strong></li>
+</ul>
+
+<h2 class="section-heading">Interpretation</h2>
+<p>Based on the market behavior from 2023 to 2025:</p>
+<ul>
+    <li>On 99% of days, the maximum loss for this portfolio is expected to be **$2,785** or less.</li>
+    <li>On the worst 1% of days (when losses exceed $2,785), the average loss is significantly higher, at **$3,740**.</li>
+</ul>
+<p>The fact that the ES is substantially larger than the VaR indicates that when this portfolio has a bad day, the losses can be quite severe. The short SPY position adds a unique risk dynamic, as it profits when the market falls but amplifies losses when the market rallies sharply.</p>
+
+<p>This analysis gives a clear, data-driven view of the potential downside in a concentrated, hedged portfolio like this one.</p>
 </ul>
 | Date      | TSLA Close Price | NVDIA Close Price | SPY Close Price | TSLA % Price Change | NVDIA % Price Change | SPY Price % Change | Daily PnL | VaR    | ES       |
 | --------- | ---------------- | ----------------- | --------------- | ------------------- | -------------------- | ------------------ | --------- | ------ | -------- |
