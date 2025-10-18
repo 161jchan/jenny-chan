@@ -1,1 +1,77 @@
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
 
+<p>I'm **thrilled** to share the results of my latest risk modeling project! We're putting a real-world, high-octane portfolio under the microscope: **Long 100 shares of TSLA**, **Long 200 shares of NVDA**, and a crucial, defensive **Short 50 shares of SPY**.</p>
+
+<p>Using daily market data from the last two years (Jan 2023 to Jan 2025!), I'll walk you through the **Historical Simulation** method to answer the single most important question: **What's my maximum expected loss?**</p>
+
+<p>We won't just look at the $99\%$ **Value at Risk (VaR)**—the loss we expect only $1\%$ of the time. We're going a step further to calculate the **Expected Shortfall (ES)**, which reveals the **average loss** if that $1\%$ tail risk actually hits. This is where the real risk lies! Get ready for a deep dive into portfolio PnL and the thrilling world of downside risk management. Let's see if this hedge is really protecting us! 📉📈</p>
+
+<h2 class="section-heading">Phase 1: Building the Daily PnL Vector</h2>
+
+<p>Our first task is to construct the historical Profit and Loss ($\text{PnL}$) vector for the entire portfolio. We do this by calculating the daily dollar change for each position and then summing them up. **The sign is everything here!**</p>
+
+<h3 class="section-heading">The Position PnL Formula</h3>
+<p>For each day \(t\), the dollar PnL for an individual asset is:</p>
+$$
+\text{PnL}_{\text{Asset}, t} = (\text{Price}_t - \text{Price}_{t-1}) \times \text{Signed Quantity}
+$$
+
+<p>The total portfolio PnL ($\text{PnL}_t$) is the sum of these components:</p>
+$$
+\text{PnL}_t = \text{PnL}_{\text{TSLA}, t} + \text{PnL}_{\text{NVDA}, t} + \text{PnL}_{\text{SPY}, t}
+$$
+
+<h3 class="section-heading">The Crucial Short Position Logic</h3>
+<p>The **TSLA** and **NVDA** positions are easy: Long means a positive quantity (+$100$ and +$200$). But for the **Short 50 shares of SPY**, we must use a **negative quantity** to correctly capture the PnL:</p>
+<p>$$
+\text{PnL}_{\text{SPY}, t} = (\text{SPY}_t - \text{SPY}_{t-1}) \times \mathbf{(-50)}
+$$</p>
+<p>If SPY's price goes up, the price change is positive, but multiplying by \(-50\) correctly results in a **negative PnL** (a loss) for our short position. This PnL vector forms the core of our risk analysis.</p>
+
+<h2 class="section-heading">Phase 2: Calculating the $\mathbf{99\%}$ VaR (The Loss Threshold)</h2>
+
+<p>The $99\%$ VaR is the loss amount that is only exceeded $1\%$ of the time. In the Historical Simulation method, this is equivalent to finding the **$1^{\text{st}}$ percentile** (or $0.01$ quantile) of our daily PnL vector.</p>
+
+<p>Assuming our daily PnL data is in the Excel range <code>B2:B505</code> (representing the ~500 days of data):</p>
+<p>$$
+\mathbf{99\%\ VaR} = \mathbf{ABS}(\text{PERCENTILE.INC}(\text{B2:B505}, \mathbf{0.01}))
+$$</p>
+
+<p>The use of <code>PERCENTILE.INC(..., 0.01)</code> finds the largest negative value that separates the worst $1\%$ of outcomes. We wrap it in <code>ABS()</code> because VaR is conventionally reported as a **positive dollar loss**.</p>
+
+<h2 class="section-heading">Phase 3: Uncovering the Expected Shortfall (The Average Tail Loss)</h2>
+
+<p>Expected Shortfall (ES) is a superior risk metric because it tells us what we can expect to lose *if* a VaR breach actually occurs. It is simply the average of all losses that are worse (more negative) than the VaR threshold.</p>
+
+<h3 class="section-heading">The Two-Step ES Calculation</h3>
+<ol>
+    <li>First, we define our negative VaR threshold (let's say we store it in cell <code>C1</code>):
+    $$ \mathbf{VaR}_{\text{Threshold}} = \text{PERCENTILE.INC}(\text{B2:B505}, 0.01) $$</li>
+    <li>Next, we use the powerful <code>AVERAGEIF</code> function to find the average of all PnL values that are strictly less than this threshold:
+    $$
+    \mathbf{99\%\ ES} = \mathbf{ABS}(\text{AVERAGEIF}(\text{B2:B505}, "\mathbf{<}" \& \mathbf{C1}))
+    $$</li>
+</ol>
+
+<p>This final number represents the average loss we would expect on the worst $1\%$ of days. It’s a vital piece of information for any serious risk manager!</p>
+
+<h2 class="section-heading">The Results: Is the Hedge Working?</h2>
+
+<p>*(This is where you would present the calculated numbers and interpret them!)*</p>
+
+<p>Based on the two years of market data, our analysis yielded the following results:</p>
+<ul>
+    <li>**Calculated $\mathbf{99\%}$ VaR:** </li>
+    <li>**Calculated $\mathbf{99\%}$ Expected Shortfall:** </li>
+</ul>
+
+<p>The difference between the VaR and ES tells the real story about the shape of our portfolio's risk. Stay tuned for the next post where we analyze whether the short SPY position effectively lowered the overall portfolio risk compared to the unhedged position! 📊</p>
