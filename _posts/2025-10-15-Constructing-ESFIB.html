@@ -7,45 +7,46 @@ categories: [projects]
 background: '/img/posts/04.jpg'
 ---
 
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- MathJax Configuration -->
 <script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']]
-    }
-  };
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    tags: 'ams'
+  }
+};
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" async></script>
 
 <p>In this post, we take the theoretical Equation System of Financial Institution Business (ESFIB) and apply it directly to real-world data from the Wells Fargo National Bank West's public Call Report filings. Our goal was to map the bank's Income Statement and Balance Sheet figures to the model's variables and calculate the three primary financial constraints (Income, Liquidity, and Capital).</p>
 
-<p>The analysis helps confirm how the model's simplified linear relationships stack up against complex real-world accounting standards, and provides estimated values for the hidden regulatory parameters (\\(\lambda\\) and \\(\kappa\\)).</p>
+<p>The analysis helps confirm how the model's simplified linear relationships stack up against complex real-world accounting standards, and provides estimated values for the hidden regulatory parameters ($\lambda$ and $\kappa$).</p>
 
 <h2 class="section-heading">Phase 1: The Income Constraint (1.2-INC)</h2>
-<p>The Income Equation determines the bank's Accrual Profit (\\(\Pi_{\text{Accrual}}\\)) based on its interest and non-interest activities. We derived the key input rates (like the Loan Rate, \\(r_B\\), and Deposit Rate, \\(r_X\\)) by dividing the reported income/expense items by the relevant Balance Sheet values.</p>
+<p>The Income Equation determines the bank's Accrual Profit ($\Pi_{\text{Accrual}}$) based on its interest and non-interest activities. We derived the key input rates (like the Loan Rate, $r_B$, and Deposit Rate, $r_X$) by dividing the reported income/expense items by the relevant Balance Sheet values.</p>
 <p>The model's calculated profit was very close to the reported Net Income, confirming the bank's core profitability structure:</p>
-<p>\\[ \Pi_{\text{Accrual}} = (1 - \tau) \times (\text{Gross Interest Income} - \text{Total Interest Expense} - \text{Provision for Losses} - \text{Total Operational Costs}) \\]</p>
-<p>Plugging in the figures (in thousands): \\(\Pi_{\text{Accrual}} \approx \\$42,910\\), compared to the reported Net Income of \\(\Pi_t = \\$42,591\\).</p>
+<p>$$ \Pi_{\text{Accrual}} = (1 - \tau) \times (\text{Gross Interest Income} - \text{Total Interest Expense} - \text{Provision for Losses} - \text{Total Operational Costs}) $$</p>
+<p>Plugging in the figures (in thousands): $\Pi_{\text{Accrual}} \approx \$42,910$, compared to the reported Net Income of $\Pi_t = \$42,591$.</p>
 
 <h2 class="section-heading">Phase 2: The Balance Sheet Constraint (1.2-BS)</h2>
-<p>The Balance Sheet equation serves as the accounting identity, ensuring Assets (LHS) equal Liabilities plus Equity (RHS). The ESFIB model uses a simple flow-through structure where retained profit (\\( (1 - \zeta)\Pi_t \\)) is added to the previous period's Equity (\\( E_{t-1} \\)) to determine the new capital base.</p>
+<p>The Balance Sheet equation serves as the accounting identity, ensuring Assets (LHS) equal Liabilities plus Equity (RHS). The ESFIB model uses a simple flow-through structure where retained profit ($(1 - \zeta)\Pi_t$) is added to the previous period's Equity ($E_{t-1}$) to determine the new capital base.</p>
 <p>The equation we used to calculate the Liabilities and Equity side was:</p>
-<p>\\[ \text{RHS} = D_t + W_t + E_{t-1} + (1 - \zeta)\Pi_t \\]</p>
-<p>Using a model-assumed retention rate of \\(\mathbf{(1 - \zeta) = 0.60}\\), the calculated RHS was approximately \\(\mathbf{\\$8,975,323.6}\\) thousand. The discrepancy between this figure and the bank's reported Total Liabilities and Equity (\\(\\$9,406,702\\) thousand) highlights the complexity of the bank's GAAP reporting versus the model's simplified structure.</p>
+<p>$$ \text{RHS} = D_t + W_t + E_{t-1} + (1 - \zeta)\Pi_t $$</p>
+<p>Using a model-assumed retention rate of $\mathbf{(1 - \zeta) = 0.60}$, the calculated RHS was approximately $\mathbf{\$8,975,323.6}$ thousand. The discrepancy between this figure and the bank's reported Total Liabilities and Equity ($\$9,406,702$ thousand) highlights the complexity of the bank's GAAP reporting versus the model's simplified structure.</p>
 
 <h2 class="section-heading">Phase 3: The Liquidity Constraint (1.2-LQ)</h2>
-<p>This constraint dictates that the bank's High-Quality Liquid Assets (\\(\mathbf{H_t = Z_t + S_t}\\)) must exceed its required net cash outflows (the requirement side, or \\(\mathbf{TNCO}\\)), which is defined by the regulatory run-off weights (\\(\lambda\\)) applied to its funding.</p>
-<p>\\[ \text{Requirement} = \lambda_{D}D_t + \lambda_{X}W_t \\]</p>
-<p>We estimated the Liquidity Coverage Ratio (LCR) run-off weights: \\(\mathbf{\lambda_X = 5\\%}\\) for Deposits (\\(W_t\\)) and \\(\mathbf{\lambda_D = 0\\%}\\) for Debt (\\(D_t\\), which was zero). The resulting Liquidity Requirement (TNCO) was calculated as \\(\mathbf{\\$370,352}\\) thousand.</p>
-<p>Comparing the bank's actual HQLA held (\\(\mathbf{\\$4,014,375}\\) thousand) against this minimal requirement showed the bank maintains a massive liquidity buffer.</p>
+<p>This constraint dictates that the bank's High-Quality Liquid Assets ($\mathbf{H_t = Z_t + S_t}$) must exceed its required net cash outflows (the requirement side, or $\mathbf{TNCO}$), which is defined by the regulatory run-off weights ($\lambda$) applied to its funding.</p>
+<p>$$ \text{Requirement} = \lambda_{D}D_t + \lambda_{X}W_t $$</p>
+<p>We estimated the Liquidity Coverage Ratio (LCR) run-off weights: $\mathbf{\lambda_X = 5\%}$ for Deposits ($W_t$) and $\mathbf{\lambda_D = 0\%}$ for Debt ($D_t$, which was zero). The resulting Liquidity Requirement (TNCO) was calculated as $\mathbf{\$370,352}$ thousand.</p>
+<p>Comparing the bank's actual HQLA held ($\mathbf{\$4,014,375}$ thousand) against this minimal requirement showed the bank maintains a massive liquidity buffer.</p>
 
 <h2 class="section-heading">Phase 4: The Capital Constraint (1.2-CAP)</h2>
-<p>The final constraint ensures the bank's Core Capital is sufficient to cover its Risk-Weighted Assets (\\(\mathbf{RWA}\\)), determined by the risk weights (\\(\kappa\\)).</p>
-<p>\\[ \text{RWA} = \kappa_{B}B_t + \kappa_{Z}Z_t + \kappa_{S}S_t \\]</p>
-<p>We used standard Basel III risk weights (in percent): \\(\mathbf{\kappa_B = 100\\%}\\) (Loans), \\(\mathbf{\kappa_S = 20\\%}\\) (Securities), and \\(\mathbf{\kappa_Z = 0\\%}\\) (Cash). The calculated RWA requirement was \\(\mathbf{\\$5,739,330.2}\\) thousand.</p>
-<p>Comparing this required RWA to the available Core Capital (\\(\mathbf{\\$1,568,278.6}\\) thousand) confirmed that the simple ESFIB model's definition of capital (Equity) is significantly different from the complex Tier 1 Capital definition used in practice, highlighting why regulatory capital is a highly specialized metric.</p>
+<p>The final constraint ensures the bank's Core Capital is sufficient to cover its Risk-Weighted Assets ($\mathbf{RWA}$), determined by the risk weights ($\kappa$).</p>
+<p>$$ \text{RWA} = \kappa_{B}B_t + \kappa_{Z}Z_t + \kappa_{S}S_t $$</p>
+<p>We used standard Basel III risk weights (in percent): $\mathbf{\kappa_B = 100\%}$ (Loans), $\mathbf{\kappa_S = 20\%}$ (Securities), and $\mathbf{\kappa_Z = 0\%}$ (Cash). The calculated RWA requirement was $\mathbf{\$5,739,330.2}$ thousand.</p>
+<p>Comparing this required RWA to the available Core Capital ($\mathbf{\$1,568,278.6}$ thousand) confirmed that the simple ESFIB model's definition of capital (Equity) is significantly different from the complex Tier 1 Capital definition used in practice, highlighting why regulatory capital is a highly specialized metric.</p>
 
 <p>Placeholder text by <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by <a href="https://unsplash.com/">Unsplash</a>.</p>
 
----
